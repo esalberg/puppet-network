@@ -4,13 +4,16 @@
 #
 # === Parameters:
 #
-#   $ensure        - required - up|down
-#   $macaddress    - optional - defaults to macaddress_$title
-#   $bootproto     - optional - defaults to "dhcp"
-#   $userctl       - optional - defaults to false
-#   $mtu           - optional
-#   $dhcp_hostname - optional
-#   $ethtool_opts  - optional
+#   $ensure          - required - up|down
+#   $macaddress      - optional - defaults to macaddress_$title
+#   $bootproto       - optional - defaults to "dhcp"
+#   $userctl         - optional - defaults to false
+#   $mtu             - optional
+#   $dhcp_hostname   - optional
+#   $ethtool_opts    - optional
+#   $peerdns         - optional
+#   $linkdelay       - optional
+#   $check_link_down - optional
 #
 # === Actions:
 #
@@ -39,13 +42,15 @@
 #
 define network::if::dynamic (
   $ensure,
-  $macaddress = undef,
-  $bootproto = 'dhcp',
-  $userctl = false,
-  $mtu = undef,
-  $dhcp_hostname = undef,
-  $ethtool_opts = undef,
-  $linkdelay = undef
+  $macaddress      = undef,
+  $bootproto       = 'dhcp',
+  $userctl         = false,
+  $mtu             = undef,
+  $dhcp_hostname   = undef,
+  $ethtool_opts    = undef,
+  $peerdns         = false,
+  $linkdelay       = undef,
+  $check_link_down = false
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -58,20 +63,29 @@ define network::if::dynamic (
   } else {
     $macaddy = $macaddress
   }
+
+  # Validate our data
+  if ! is_mac_address($macaddy) {
+    fail("${macaddy} is not a MAC address.")
+  }
+
   # Validate booleans
   validate_bool($userctl)
+  validate_bool($peerdns)
 
   network_if_base { $title:
-    ensure        => $ensure,
-    ipaddress     => '',
-    netmask       => '',
-    gateway       => '',
-    macaddress    => $macaddy,
-    bootproto     => $bootproto,
-    userctl       => $userctl,
-    mtu           => $mtu,
-    dhcp_hostname => $dhcp_hostname,
-    ethtool_opts  => $ethtool_opts,
-    linkdelay     => $linkdelay,
+    ensure          => $ensure,
+    ipaddress       => '',
+    netmask         => '',
+    gateway         => '',
+    macaddress      => $macaddy,
+    bootproto       => $bootproto,
+    userctl         => $userctl,
+    mtu             => $mtu,
+    dhcp_hostname   => $dhcp_hostname,
+    ethtool_opts    => $ethtool_opts,
+    peerdns         => $peerdns,
+    linkdelay       => $linkdelay,
+    check_link_down => $check_link_down,
   }
 } # define network::if::dynamic

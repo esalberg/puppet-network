@@ -67,12 +67,6 @@ define network::if::static (
   $domain = undef,
   $linkdelay = undef
 ) {
-  # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
-  if $ipv6address {
-    if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
-  }
-
   if ! is_mac_address($macaddress) {
     # Strip off any tailing VLAN (ie eth5.90 -> eth5).
     $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
@@ -80,6 +74,16 @@ define network::if::static (
   } else {
     $macaddy = $macaddress
   }
+
+  # Validate our data
+  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if $ipv6address {
+    if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
+  }
+  if ! is_mac_address($macaddy) {
+    fail("${macaddy} is not a MAC address.")
+  }
+
   # Validate booleans
   validate_bool($userctl)
   validate_bool($ipv6init)

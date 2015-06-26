@@ -143,6 +143,7 @@ describe 'network::bond::static', :type => 'define' do
       :ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
       :ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       :domain       => 'somedomain.com',
+      :userctl      => 'yes',
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -176,6 +177,7 @@ describe 'network::bond::static', :type => 'define' do
         'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
         'IPV6_PEERDNS=yes',
         'NM_CONTROLLED=no',
+        'USERCTL=yes',
       ])
     end
     it { should contain_service('network') }

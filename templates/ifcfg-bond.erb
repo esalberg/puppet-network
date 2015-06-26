@@ -6,6 +6,8 @@ HWADDR=<%= @macaddress %>
 MASTER=<%= @master %>
 SLAVE=yes
 TYPE=Ethernet
-<% if @ethtool_opts %>ETHTOOL_OPTS="<%= @ethtool_opts %>"
-<% end -%>
+<% if @ethtool_opts %>ETHTOOL_OPTS="<%= @ethtool_opts %>"<% end -%>
 NM_CONTROLLED=no
+<% if @userctl %>USERCTL=yes<% end -%>
+<% if @bootproto %>BOOTPROTO=<%= @bootproto %><% end -%>
+<% if @onboot %>ONBOOT=<%= @onboot %><% end -%>

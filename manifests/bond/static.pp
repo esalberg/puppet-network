@@ -12,6 +12,7 @@
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
+#   $userctl      - optional
 #
 # === Actions:
 #
@@ -39,18 +40,19 @@ define network::bond::static (
   $ensure,
   $ipaddress,
   $netmask,
-  $gateway = undef,
-  $mtu = undef,
+  $gateway      = undef,
+  $mtu          = undef,
   $ethtool_opts = undef,
   $bonding_opts = 'miimon=100',
-  $peerdns = false,
-  $ipv6init = false,
-  $ipv6address = undef,
-  $ipv6gateway = undef,
-  $ipv6peerdns = false,
-  $dns1 = undef,
-  $dns2 = undef,
-  $domain = undef
+  $peerdns      = false,
+  $ipv6init     = false,
+  $ipv6address  = undef,
+  $ipv6gateway  = undef,
+  $ipv6peerdns  = false,
+  $dns1         = undef,
+  $dns2         = undef,
+  $domain       = undef,
+  $userctl      = undef,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -63,7 +65,6 @@ define network::bond::static (
   # Validate booleans
   validate_bool($ipv6init)
   validate_bool($ipv6peerdns)
-
 
   network_if_base { $title:
     ensure       => $ensure,
@@ -83,6 +84,7 @@ define network::bond::static (
     dns1         => $dns1,
     dns2         => $dns2,
     domain       => $domain,
+    userctl      => $userctl,
   }
 
   # Only install "alias bondN bonding" on old OSs that support

@@ -4,9 +4,12 @@
 #
 # === Parameters:
 #
-#   $macaddress   - required
+#   $macaddress   - optional, defaults to macaddress_$title
 #   $master       - required
 #   $ethtool_opts - optional
+#   $userctl      - optional
+#   $bootproto    - optional
+#   $onboot       - optional
 #
 # === Actions:
 #
@@ -34,16 +37,27 @@
 define network::bond::slave (
   $macaddress,
   $master,
-  $ethtool_opts = undef
+  $ethtool_opts = undef,
+  $userctl = undef,
+  $bootproto = undef,
+  $onboot = undef,
 ) {
-  # Validate our data
-  if ! is_mac_address($macaddress) {
-    fail("${macaddress} is not a MAC address.")
-  }
-
   include '::network'
 
   $interface = $name
+
+  if ! is_mac_address($macaddress) {
+    # Strip off any tailing VLAN (ie eth5.90 -> eth5).
+    $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
+    $macaddy = getvar("::macaddress_${title_clean}")
+  } else {
+    $macaddy = $macaddress
+  }
+
+  # Validate our data
+  if ! is_mac_address($macaddy) {
+    fail("${macaddy} is not a MAC address.")
+  }
 
   file { "ifcfg-${interface}":
     ensure  => 'present',
