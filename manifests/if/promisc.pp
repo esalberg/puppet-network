@@ -1,15 +1,13 @@
-# == Definition: network::bond::slave
+# == Definition: network::if::promisc
 #
-# Creates a bonded slave interface.
+# Creates a promiscuous interface.
 #
 # === Parameters:
 #
-#   $master       - required
+#   $ensure        - required - up|down
 #   $macaddress   - optional, defaults to macaddress_$title
-#   $ethtool_opts - optional
 #   $userctl      - optional
 #   $bootproto    - optional
-#   $onboot       - optional
 #
 # === Actions:
 #
@@ -21,9 +19,13 @@
 #
 # === Sample Usage:
 #
-#   network::bond::slave { 'eth1':
-#     macaddress => $::macaddress_eth1,
-#     master     => 'bond0',
+#   network::if::promisc { 'eth1':
+#     ensure => 'up',
+#   }
+#
+#   network::if::promisc { 'eth1':
+#     ensure => 'up',
+#     macaddress => aa:bb:cc:dd:ee:ff,
 #   }
 #
 # === Authors:
@@ -34,13 +36,11 @@
 #
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
-define network::bond::slave (
-  $master,
+define network::if::promisc (
+  $ensure,
   $macaddress = undef,
-  $ethtool_opts = undef,
-  $userctl = undef,
-  $bootproto = undef,
-  $onboot = undef,
+  $userctl    = false,
+  $bootproto  = undef,
 ) {
   include '::network'
 
@@ -54,9 +54,21 @@ define network::bond::slave (
     $macaddy = $macaddress
   }
 
+  # Validate our regular expressions
+  $states = [ '^up$', '^down$' ]
+  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
+  # Validate booleans
+  validate_bool($userctl)
+
   # Validate our data
   if ! is_mac_address($macaddy) {
     fail("${macaddy} is not a MAC address.")
+  }
+
+  $onboot = $ensure ? {
+    'up'    => 'yes',
+    'down'  => 'no',
+    default => undef,
   }
 
   file { "ifcfg-${interface}":
@@ -65,8 +77,7 @@ define network::bond::slave (
     owner   => 'root',
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
-    content => template('network/ifcfg-bond.erb'),
-    before  => File["ifcfg-${master}"],
+    content => template('network/ifcfg-promisc.erb'),
     notify  => Service['network'],
   }
-} # define network::bond::slave
+} # define network::if::promisc

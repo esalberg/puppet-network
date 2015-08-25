@@ -100,6 +100,12 @@ Normal interface - bridged (the corresponding network::bridge::* may also have t
       bridge => 'br0'
     }
 
+Normal interface - promiscuous:
+
+    network::if::promisc { 'eth1':
+      ensure => 'up',
+    }
+
 Aliased interface:
 
     network::alias { 'eth0:1':
