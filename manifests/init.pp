@@ -73,10 +73,12 @@ class network {
 #   $linkdelay       - optional
 #   $check_link_down - optional
 #   $flush           - optional
+#   $defroute        - optional
 #   $zone            - optional
 #   $metric          - optional
 #   $defroute        - optional
 #   $restart         - optional - defaults to trze
+#   $promisc         - optional - defaults to false
 #
 # === Actions:
 #
@@ -136,6 +138,7 @@ define network_if_base (
   $zone            = undef,
   $metric          = undef,
   $restart         = true,
+  $promisc         = false
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -149,6 +152,7 @@ define network_if_base (
   validate_bool($manage_hwaddr)
   validate_bool($flush)
   validate_bool($restart)
+  validate_bool($promisc)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
