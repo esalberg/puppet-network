@@ -238,6 +238,10 @@ Normal interface - VLAN - static (minimal):
       netmask   => '255.255.255.0',
     }
 
+Promiscuous interface:
+   To set a static or dynamic interface to promiscuous mode, add:
+    promisc => true
+
 Flush IP addresses:
 
 Network scripts on RHEL7 do not flush IP addresses, so you eventually end up with multiple of them, passing `flush => true` will run `ip addr flush` on given interface before notifying the network service.
