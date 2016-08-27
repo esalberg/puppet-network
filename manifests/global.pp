@@ -24,6 +24,7 @@
 #   $ipv6networking - optional - enables / disables IPv6 globally
 #   $nozeroconf     - optional
 #   $restart        - optional - defaults to true
+#   $restart_global - optional - defaults to true; overrides all if_base resources
 #   $requestreopen  - optional - defaults to true
 #
 # === Actions:
@@ -72,6 +73,7 @@ class network::global (
   $ipv6networking = false,
   $nozeroconf     = undef,
   $restart        = true,
+  $restart_global = true,
   $requestreopen  = true
 ) {
   # Validate our data
@@ -84,6 +86,7 @@ class network::global (
 
   validate_bool($ipv6networking)
   validate_bool($restart)
+  validate_bool($restart_global)
   validate_bool($requestreopen)
 
   # Validate our regular expressions
@@ -127,7 +130,7 @@ class network::global (
     content => template('network/network.erb'),
   }
 
-  if $restart {
+  if $restart and $restart_global {
     File['network.sysconfig'] {
       notify  => Service['network'],
     }

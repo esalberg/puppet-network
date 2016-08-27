@@ -160,6 +160,7 @@ define network_if_base (
   include '::network'
 
   $interface = $name
+  $restart_global = $::network::global::restart_global
 
   # Deal with the case where $dns2 is non-empty and $dns1 is empty.
   if $dns2 {
@@ -211,7 +212,7 @@ define network_if_base (
     content => $iftemplate,
   }
 
-  if $restart {
+  if $restart and $restart_global {
     File["ifcfg-${interface}"] {
       notify  => Service['network'],
     }
