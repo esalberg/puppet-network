@@ -160,7 +160,7 @@ define network_if_base (
   include '::network'
 
   $interface = $name
-  $restart_global = $::network::global::restart_global
+  $restart_global = false
 
   # Deal with the case where $dns2 is non-empty and $dns1 is empty.
   if $dns2 {
