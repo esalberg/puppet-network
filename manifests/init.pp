@@ -212,11 +212,11 @@ define network_if_base (
     content => $iftemplate,
   }
 
-  if $restart and $restart_global {
-    File["ifcfg-${interface}"] {
-      notify  => Service['network'],
-    }
-  }
+#  if $restart and $restart_global {
+#    File["ifcfg-${interface}"] {
+#      notify  => Service['network'],
+#    }
+#  }
 } # define network_if_base
 
 # == Definition: validate_ip_address
