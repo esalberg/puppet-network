@@ -39,7 +39,7 @@
 #
 # === Copyright:
 #
-# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
+# Copyright (C) 2015 Elyse Salberg, unless otherwise noted.
 #
 define network::if::promisc (
   $ensure,
@@ -88,14 +88,14 @@ define network::if::promisc (
   if $promisc {
     case $::osfamily {
       'RedHat': {
-        case $::operatingsystemmajversion {
+        case $::operatingsystemmajrelease {
           '5': {
-            $ifup_source   = "puppet:///modules/${module_name}/promisc/ifup-local_5"
-            $ifdown_source = "puppet:///modules/${module_name}/promisc/ifdown-local_5"
+            $ifup_source   = "puppet:///modules/${module_name}/promisc/ifup-local-promisc_5"
+            $ifdown_source = "puppet:///modules/${module_name}/promisc/ifdown-local-promisc_5"
           }
           '6','7': {
-            $ifup_source   = "puppet:///modules/${module_name}/promisc/ifup-local_6"
-            $ifdown_source = "puppet:///modules/${module_name}/promisc/ifdown-local_6"
+            $ifup_source   = "puppet:///modules/${module_name}/promisc/ifup-local-promisc_6"
+            $ifdown_source = "puppet:///modules/${module_name}/promisc/ifdown-local-promisc_6"
           }
           default: {
           }
