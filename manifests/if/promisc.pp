@@ -159,6 +159,6 @@ define network::if::promisc (
     ethtool_opts  => $ethtool_opts,
     restart       => $restart,
     promisc       => $promisc,
-    schedule      => $sched,
+    sched         => $sched,
   }
 } # define network::if::promisc

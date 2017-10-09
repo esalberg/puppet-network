@@ -304,6 +304,17 @@ If restart is true (default), then an optional schedule can be specified for the
       sched     => 'after_hours',
     }
 
+Use ifscripts instead of restarting the network services (alias only):
+
+Alias resources can trigger using the ifdown / ifup scripts instead of doing a full network restart.  They also can be set to ensure => 'absent' to remove the ifcfg-${interface} file (as well as 'up' and 'down'). The ifscripts parameter is a boolean that defaults to false.
+
+    network::alias { 'eth0:1':
+      ensure => 'up',
+      ipaddress => '1.2.3.4',
+      netmask   => '255.255.255.0',
+      ifscripts => true,
+    }
+
 Defaults for restart and/or schedule:
 By default, network restarts are enabled (true) and schedules are not set (undef).  The defaults can be overridden for all resources by passing the `restart_default` and/or `sched_default` parameters for the network class.
 

@@ -103,7 +103,7 @@ define network::bond::static (
     metric       => $metric,
     restart      => $restart,
     userctl      => $userctl,
-    schedule     => $sched,
+    sched        => $sched,
   }
 
   # Only install "alias bondN bonding" on old OSs that support

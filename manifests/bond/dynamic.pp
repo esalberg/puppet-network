@@ -69,7 +69,7 @@ define network::bond::dynamic (
     defroute     => $defroute,
     metric       => $metric,
     restart      => $restart,
-    schedule     => $sched,
+    sched        => $sched,
   }
 
   # Only install "alias bondN bonding" on old OSs that support

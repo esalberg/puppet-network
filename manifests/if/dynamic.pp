@@ -101,6 +101,6 @@ define network::if::dynamic (
     zone            => $zone,
     metric          => $metric,
     restart         => $restart,
-    schedule        => $sched,
+    sched           => $sched,
   }
 } # define network::if::dynamic

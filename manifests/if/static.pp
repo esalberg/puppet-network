@@ -152,6 +152,6 @@ define network::if::static (
     metric          => $metric,
     restart         => $restart,
     arpcheck        => $arpcheck,
-    schedule        => $sched,
+    sched           => $sched,
   }
 } # define network::if::static
