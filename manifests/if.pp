@@ -84,6 +84,6 @@ define network::if (
     flush         => $flush,
     zone          => $zone,
     restart       => $restart,
-    schedule      => $sched,
+    sched         => $sched,
   }
 } # define network::if

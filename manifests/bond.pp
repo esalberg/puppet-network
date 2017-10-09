@@ -61,7 +61,7 @@ define network::bond (
     bonding_opts => $bonding_opts,
     zone         => $zone,
     restart      => $restart,
-    schedule     => $sched,
+    sched        => $sched,
   }
 
   # Only install "alias bondN bonding" on old OSs that support

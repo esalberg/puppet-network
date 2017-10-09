@@ -66,6 +66,6 @@ define network::if::bridge (
     ethtool_opts => $ethtool_opts,
     bridge       => $bridge,
     restart      => $restart,
-    schedule     => $sched,
+    sched        => $sched,
   }
 } # define network::if::bridge
