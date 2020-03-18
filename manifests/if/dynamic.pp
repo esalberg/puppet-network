@@ -4,22 +4,23 @@
 #
 # === Parameters:
 #
-#   $ensure          - required - up|down
-#   $macaddress      - optional - defaults to macaddress_$title
-#   $manage_hwaddr   - optional - defaults to true
-#   $bootproto       - optional - defaults to "dhcp"
-#   $userctl         - optional - defaults to false
-#   $mtu             - optional
-#   $dhcp_hostname   - optional
-#   $ethtool_opts    - optional
-#   $peerdns         - optional
-#   $linkdelay       - optional
-#   $check_link_down - optional
-#   $zone            - optional
-#   $metric          - optional
-#   $defroute        - optional
-#   $restart         - optional - defaults to $::network::restart_default (true)
-#   $sched           - optional - defaults to $::network::sched_default (undef)
+#   $ensure           - required - up|down
+#   $macaddress       - optional - defaults to macaddress_$title
+#   $manage_hwaddr    - optional - defaults to true
+#   $bootproto        - optional - defaults to "dhcp"
+#   $userctl          - optional - defaults to false
+#   $mtu              - optional
+#   $dhcp_hostname    - optional
+#   $ethtool_opts     - optional
+#   $peerdns          - optional
+#   $linkdelay        - optional
+#   $check_link_down  - optional
+#   $zone             - optional
+#   $metric           - optional
+#   $defroute         - optional
+#   $restart          - optional - defaults to $::network::restart_default (true)
+#   $sched            - optional - defaults to $::network::sched_default (undef)
+#   $persist_dhclient - optional - defaults to false
 #
 # === Actions:
 #
@@ -48,21 +49,22 @@
 #
 define network::if::dynamic (
   $ensure,
-  $macaddress      = undef,
-  $manage_hwaddr   = true,
-  $bootproto       = 'dhcp',
-  $userctl         = false,
-  $mtu             = undef,
-  $dhcp_hostname   = undef,
-  $ethtool_opts    = undef,
-  $peerdns         = false,
-  $linkdelay       = undef,
-  $check_link_down = false,
-  $defroute        = undef,
-  $zone            = undef,
-  $metric          = undef,
-  $restart         = $::network::restart_default,
-  $sched           = $::network::sched_default,
+  $macaddress       = undef,
+  $manage_hwaddr    = true,
+  $bootproto        = 'dhcp',
+  $userctl          = false,
+  $mtu              = undef,
+  $dhcp_hostname    = undef,
+  $ethtool_opts     = undef,
+  $peerdns          = false,
+  $linkdelay        = undef,
+  $check_link_down  = false,
+  $defroute         = undef,
+  $zone             = undef,
+  $metric           = undef,
+  $restart          = $::network::restart_default,
+  $sched            = $::network::sched_default,
+  $persist_dhclient = false,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -83,24 +85,25 @@ define network::if::dynamic (
   include '::network'
 
   network_if_base { $title:
-    ensure          => $ensure,
-    ipaddress       => '',
-    netmask         => '',
-    gateway         => '',
-    macaddress      => $macaddy,
-    manage_hwaddr   => $manage_hwaddr,
-    bootproto       => $bootproto,
-    userctl         => $userctl,
-    mtu             => $mtu,
-    dhcp_hostname   => $dhcp_hostname,
-    ethtool_opts    => $ethtool_opts,
-    peerdns         => $peerdns,
-    linkdelay       => $linkdelay,
-    check_link_down => $check_link_down,
-    defroute        => $defroute,
-    zone            => $zone,
-    metric          => $metric,
-    restart         => $restart,
-    sched           => $sched,
+    ensure           => $ensure,
+    ipaddress        => '',
+    netmask          => '',
+    gateway          => '',
+    macaddress       => $macaddy,
+    manage_hwaddr    => $manage_hwaddr,
+    bootproto        => $bootproto,
+    userctl          => $userctl,
+    mtu              => $mtu,
+    dhcp_hostname    => $dhcp_hostname,
+    ethtool_opts     => $ethtool_opts,
+    peerdns          => $peerdns,
+    linkdelay        => $linkdelay,
+    check_link_down  => $check_link_down,
+    defroute         => $defroute,
+    zone             => $zone,
+    metric           => $metric,
+    restart          => $restart,
+    sched            => $sched,
+    persist_dhclient => $persist_dhclient,
   }
 } # define network::if::dynamic
