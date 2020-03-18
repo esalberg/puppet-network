@@ -53,37 +53,38 @@ class network (
 #
 # === Parameters:
 #
-#   $ensure          - required - up|down
-#   $ipaddress       - optional
-#   $netmask         - optional
-#   $macaddress      - required
-#   $manage_hwaddr   - optional - defaults to true
-#   $gateway         - optional
-#   $noaliasrouting  - optional - defaults to false
-#   $bootproto       - optional
-#   $userctl         - optional - defaults to false
-#   $mtu             - optional
-#   $dhcp_hostname   - optional
-#   $ethtool_opts    - optional
-#   $bonding_opts    - optional
-#   $isalias         - optional
-#   $peerdns         - optional
-#   $dns1            - optional
-#   $dns2            - optional
-#   $domain          - optional
-#   $bridge          - optional
-#   $scope           - optional
-#   $linkdelay       - optional
-#   $check_link_down - optional
-#   $flush           - optional
-#   $zone            - optional
-#   $metric          - optional
-#   $defroute        - optional
-#   $promisc         - optional - defaults to false
-#   $restart         - optional - defaults to $::network::restart_default (true)
-#   $arpcheck        - optional - defaults to true
-#   $sched           - optional - defaults to $::network::sched_default (undef)
-#   $ifscripts       - optional (alias only)
+#   $ensure           - required - up|down
+#   $ipaddress        - optional
+#   $netmask          - optional
+#   $macaddress       - required
+#   $manage_hwaddr    - optional - defaults to true
+#   $gateway          - optional
+#   $noaliasrouting   - optional - defaults to false
+#   $bootproto        - optional
+#   $userctl          - optional - defaults to false
+#   $mtu              - optional
+#   $dhcp_hostname    - optional
+#   $ethtool_opts     - optional
+#   $bonding_opts     - optional
+#   $isalias          - optional
+#   $peerdns          - optional
+#   $dns1             - optional
+#   $dns2             - optional
+#   $domain           - optional
+#   $bridge           - optional
+#   $scope            - optional
+#   $linkdelay        - optional
+#   $check_link_down  - optional
+#   $flush            - optional
+#   $zone             - optional
+#   $metric           - optional
+#   $defroute         - optional
+#   $promisc          - optional - defaults to false
+#   $restart          - optional - defaults to $::network::restart_default (true)
+#   $arpcheck         - optional - defaults to true
+#   $sched            - optional - defaults to $::network::sched_default (undef)
+#   $ifscripts        - optional (alias only)
+#   $persist_dhclient - optional
 #
 # === Actions:
 #
@@ -112,41 +113,42 @@ class network (
 define network_if_base (
   $ensure,
   $macaddress,
-  $ipaddress       = undef,
-  $netmask         = undef,
-  $manage_hwaddr   = true,
-  $gateway         = undef,
-  $noaliasrouting  = false,
-  $ipv6address     = undef,
-  $ipv6gateway     = undef,
-  $ipv6init        = false,
-  $ipv6autoconf    = false,
-  $ipv6secondaries = undef,
-  $bootproto       = 'none',
-  $userctl         = false,
-  $mtu             = undef,
-  $dhcp_hostname   = undef,
-  $ethtool_opts    = undef,
-  $bonding_opts    = undef,
-  $isalias         = false,
-  $peerdns         = false,
-  $ipv6peerdns     = false,
-  $dns1            = undef,
-  $dns2            = undef,
-  $domain          = undef,
-  $bridge          = undef,
-  $linkdelay       = undef,
-  $scope           = undef,
-  $check_link_down = false,
-  $flush           = false,
-  $defroute        = undef,
-  $zone            = undef,
-  $metric          = undef,
-  $promisc         = false,
-  $restart         = $network::restart_default,
-  $arpcheck        = true,
-  $sched           = $network::sched_default,
-  $ifscripts       = false,
+  $ipaddress        = undef,
+  $netmask          = undef,
+  $manage_hwaddr    = true,
+  $gateway          = undef,
+  $noaliasrouting   = false,
+  $ipv6address      = undef,
+  $ipv6gateway      = undef,
+  $ipv6init         = false,
+  $ipv6autoconf     = false,
+  $ipv6secondaries  = undef,
+  $bootproto        = 'none',
+  $userctl          = false,
+  $mtu              = undef,
+  $dhcp_hostname    = undef,
+  $ethtool_opts     = undef,
+  $bonding_opts     = undef,
+  $isalias          = false,
+  $peerdns          = false,
+  $ipv6peerdns      = false,
+  $dns1             = undef,
+  $dns2             = undef,
+  $domain           = undef,
+  $bridge           = undef,
+  $linkdelay        = undef,
+  $scope            = undef,
+  $check_link_down  = false,
+  $flush            = false,
+  $defroute         = undef,
+  $zone             = undef,
+  $metric           = undef,
+  $promisc          = false,
+  $restart          = $network::restart_default,
+  $arpcheck         = true,
+  $sched            = $network::sched_default,
+  $ifscripts        = false,
+  $persist_dhclient = false,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -163,6 +165,7 @@ define network_if_base (
   validate_bool($restart)
   validate_bool($arpcheck)
   validate_bool($ifscripts)
+  validate_bool($persist_dhclient)
   # Validate our regular expressions
   $states = [ '^up$', '^down$', '^absent$' ]
   validate_re($ensure, $states, '$ensure must be "up", "down", or "absent".')
